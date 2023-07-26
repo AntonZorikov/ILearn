@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Authorization</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <form th:action="@{/login}" method="post">
+        <div>Login:<label><input type="text" name = "login"></label></div>
+        <div>Password:<label><input type="password" name = "password"></label></div>
+        <div>Email:<label><input type="email" name = "email"></label></div>
+        <div><input type="submit" value="LogIn"></div>
+    </form>
+
+    <div th:if="${error}">
+        Error: [[$error message]]
+    </div>
+</body>

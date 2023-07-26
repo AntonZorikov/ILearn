@@ -1,0 +1,17 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Course</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <form th:action="@{/create_course}" method="post">
+        <div>Title: <label><input type="text" name="title"></label></div>
+        <div>Description: <label><input type="text" name="description"></label></div>
+        <div>Price: <label><input type="text" name="price"></label></div>
+        <div><label><input type="submit" value="Create"></label></div>
+    </form>
+    <div th:if="${error}">
+        [[${errorMessage}]]
+    </div>
+</body>
