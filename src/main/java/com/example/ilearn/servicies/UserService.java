@@ -45,4 +45,7 @@ public class UserService {
         }
     }
 
+//    public boolean userIsAuthorOfCourse(Long userId, Long courseId) {
+//
+//    }
 }

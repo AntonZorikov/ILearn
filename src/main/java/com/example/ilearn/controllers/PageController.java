@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class PageController {
@@ -46,13 +47,27 @@ public class PageController {
     }
 
     @GetMapping("author_courses")
-    public String authour_courses(HttpSession session, Model model){
+    public String author_courses(HttpSession session, Model model){
         if(authorizationService.isUserAuthorBySession(session)){
+            model.addAttribute("courses", authorizationService.getUserBySession(session).getCourses());
             return "author_courses";
         }
         else{
-            model.addAttribute("errorMessage", "Not enough rights")
+            model.addAttribute("errorMessage", "Not enough rights");
             return "error";
         }
+    }
+
+    @GetMapping("/edit_course")
+    public String edit_course(@RequestParam Long courseId, Model model, HttpSession session){
+        if(authorizationService.isUserAuthorBySession(session)){
+            model.addAttribute("courses", authorizationService.getUserBySession(session).getCourses());
+            return "author_courses";
+        }
+        else{
+            model.addAttribute("errorMessage", "Not enough rights");
+            return "error";
+        }
+    }
     }
 }

@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Course</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Price</th>
+    </tr>
+    <tr th:each="course : ${courses}">
+        <td th:text="${course.title}"></td>
+        <td th:text="${course.description}"></td>
+        <td th:text="${course.price}"></td>
+        <td><a th:href="@{/edit_course(courseId=${course.id})}"></a></td>
+    </tr>
+</table>
+<div th:if="${error}">
+    [[${errorMessage}]]
+</div>
+</body>

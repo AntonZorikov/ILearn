@@ -7,10 +7,10 @@ import com.example.ilearn.models.CreateCourseInputs;
 import com.example.ilearn.repositories.CourseRepository;
 import com.example.ilearn.repositories.UserRepository;
 import jakarta.servlet.http.HttpSession;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,5 +36,9 @@ public class CourseService {
         else{
             throw new CourseAlreadyExist("Course with the same name already exists");
         }
+    }
+
+    public List<CourseEntity> findAllCoursesByUserId(Long user_id){
+        return courseRepository.findAllByAuthor_Id(user_id);
     }
 }

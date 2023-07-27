@@ -38,4 +38,9 @@ public class AuthorizationService {
             return false;
         }
     }
+
+    public UserEntity getUserBySession(HttpSession session){
+        Optional<UserEntity> user = userRepository.findById((Long) session.getAttribute("userId"));
+        return user.orElse(null);
+    }
 }

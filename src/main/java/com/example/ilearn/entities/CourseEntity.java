@@ -3,14 +3,15 @@ package com.example.ilearn.entities;
 import com.example.ilearn.models.CreateCourseInputs;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
-
 @Entity
 @Table(name = "courses")
 @Getter
 @Setter
+@NoArgsConstructor
 public class CourseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +34,7 @@ public class CourseEntity {
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     List<LessonEntity> lessons;
 
-    public CourseEntity(CreateCourseInputs createCourseInputs, UserEntity author){
+    public CourseEntity(CreateCourseInputs createCourseInputs, UserEntity author) {
         this.title = createCourseInputs.getTitle();
         this.description = createCourseInputs.getDescription();
         this.price = createCourseInputs.getPrice();
