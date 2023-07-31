@@ -15,7 +15,7 @@
         <td th:text="${course.title}"></td>
         <td th:text="${course.description}"></td>
         <td th:text="${course.price}"></td>
-        <td><a th:href="@{/edit_course(courseId=${course.id})}"></a></td>
+        <td><a th:href="@{/edit_course(courseId=${course.id})}">Edit course</a></td>
     </tr>
 </table>
 <div th:if="${error}">

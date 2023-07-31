@@ -29,15 +29,16 @@ public class AuthorizationService {
             return (boolean) session.getAttribute("sessionIsActive");
         }
     }
-    public boolean isUserAuthorBySession(HttpSession session){
-        Optional<UserEntity> user = userRepository.findById((Long) session.getAttribute("userId"));
-        if(user.isPresent() && Objects.equals(user.get().getRole(), "AUTHOR")){
-            return true;
-        }
-        else{
+    public boolean isUserAuthorBySession(HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
             return false;
         }
+
+        Optional<UserEntity> user = userRepository.findById(userId);
+        return user.isPresent() && Objects.equals(user.get().getRole(), "AUTHOR");
     }
+
 
     public UserEntity getUserBySession(HttpSession session){
         Optional<UserEntity> user = userRepository.findById((Long) session.getAttribute("userId"));

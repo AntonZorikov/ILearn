@@ -44,8 +44,4 @@ public class UserService {
             throw new IncorrectLoginOrPassword("Incorrect login or password");
         }
     }
-
-//    public boolean userIsAuthorOfCourse(Long userId, Long courseId) {
-//
-//    }
 }

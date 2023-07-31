@@ -1,6 +1,5 @@
 package com.example.ilearn.controllers;
 
-import com.example.ilearn.exceptions.CourseAlreadyExist;
 import com.example.ilearn.servicies.AuthorizationService;
 import com.example.ilearn.servicies.CourseService;
 import jakarta.servlet.http.HttpSession;
@@ -8,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -60,14 +58,14 @@ public class PageController {
 
     @GetMapping("/edit_course")
     public String edit_course(@RequestParam Long courseId, Model model, HttpSession session){
-        if(authorizationService.isUserAuthorBySession(session)){
-            model.addAttribute("courses", authorizationService.getUserBySession(session).getCourses());
-            return "author_courses";
+        if(authorizationService.isUserAuthorBySession(session) &&
+                courseService.userIsAuthorOfCourse(authorizationService.getUserBySession(session).getId(), courseId)){
+            model.addAttribute("course", courseService.getCourseById(courseId));
+            return "edit_course";
         }
         else{
-            model.addAttribute("errorMessage", "Not enough rights");
+            model.addAttribute("errorMessage", "You are not the author of this course");
             return "error";
         }
-    }
     }
 }

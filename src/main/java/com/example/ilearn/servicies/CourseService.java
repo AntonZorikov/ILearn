@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -40,5 +41,20 @@ public class CourseService {
 
     public List<CourseEntity> findAllCoursesByUserId(Long user_id){
         return courseRepository.findAllByAuthor_Id(user_id);
+    }
+
+    public boolean userIsAuthorOfCourse(Long userId, Long courseId) {
+        Optional<CourseEntity> course = courseRepository.findById(courseId);
+        if(course.isPresent() && Objects.equals(course.get().getUser_id(), userId)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public CourseEntity getCourseById(Long courseId){
+        Optional<CourseEntity> course = courseRepository.findById(courseId);
+        return course.orElse(null);
     }
 }
