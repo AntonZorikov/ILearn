@@ -5,12 +5,39 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-    <div></div><a th:text = "${course.title}"></a></div>
-    <!--    Change title form-->
-    <!--    ...-->
-    <div><a th:text = "${course.author.login}"></a></div>
-    <div><a th:text = "${course.description}"></a></div>
+    <div></div><a th:text="${course.title}"></a></div>
+    <form th:action="@{/change_course_title}" method="post">
+        <div><label><input type="text" name="title"></label></div>
+        <div><label><input type="hidden" name="course_id" th:value="${course.id}"></label></div>
+        <div><input type="submit" value="Change"></div>
+    </form>
+    <div><a th:text="${course.author.login}"></a></div>
+    <div><a th:text="${course.description}"></a></div>
     <!--    Change description (go to other page)-->
     <!--    ...-->
-    <div><a th:text = "${course.price}"></a></div>
+    <div><a th:text="${course.price}"></a></div>
+    <form th:action="@{/change_course_price}" method="post">
+        <div><label><input type="number" name="price"></label></div>
+        <div><label><input type="hidden" name="course_id" th:value="${course.id}"></label></div>
+        <div><input type="submit" value="Change"></div>
+    </form>
+
+    <h3>Lessons:</h3>
+    <div th:if="${lessonsFind}">
+        <table>
+            <tr th:each="lesson : ${lessons}">
+                <td><a th:text="${lesson.title}"></a></td>
+                <!--<td><a th:href="/edit_lesson(lessonId=${lesson.id})}"></a></td> -->
+            </tr>
+        </table>
+    </div>
+    <h3>Create Lesson:</h3>
+    <form th:action="@{/create_lesson}" method="post">
+        <div>Title:<label><input type="text" name="title" required></label></div>
+        <div><label><input type="hidden" name="course_id" th:value="${course.id}"></label></div>
+        <div><label><input type="submit"></label></div>
+    </form>
+    <div th:if="${error}">
+        <a style="color: red;">Error: [[$errorMessage]]</a>
+    </div>
 </body>

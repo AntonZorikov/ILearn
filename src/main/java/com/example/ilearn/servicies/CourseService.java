@@ -1,10 +1,15 @@
 package com.example.ilearn.servicies;
 
 import com.example.ilearn.entities.CourseEntity;
+import com.example.ilearn.entities.LessonEntity;
 import com.example.ilearn.entities.UserEntity;
 import com.example.ilearn.exceptions.CourseAlreadyExist;
+import com.example.ilearn.exceptions.CourseNotExist;
+import com.example.ilearn.exceptions.IncorrectData;
 import com.example.ilearn.models.CreateCourseInputs;
+import com.example.ilearn.models.CreateLessonInputs;
 import com.example.ilearn.repositories.CourseRepository;
+import com.example.ilearn.repositories.LessonRepository;
 import com.example.ilearn.repositories.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +26,9 @@ public class CourseService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private LessonRepository lessonRepository;
 
     public CourseEntity createCourse(CreateCourseInputs createCourseInputs, HttpSession session) throws Exception {
         if(courseRepository.findByTitle(createCourseInputs.getTitle()) == null){
@@ -56,5 +64,39 @@ public class CourseService {
     public CourseEntity getCourseById(Long courseId){
         Optional<CourseEntity> course = courseRepository.findById(courseId);
         return course.orElse(null);
+    }
+
+    public LessonEntity createLesson(CreateLessonInputs lessonInputs) throws CourseNotExist, IncorrectData {
+        if(lessonInputs.getTitle() == null || lessonInputs.getTitle().equals("")){
+            throw new IncorrectData("Title should be longer");
+        }
+        LessonEntity lesson = new LessonEntity(lessonInputs);
+        Optional<CourseEntity> course = courseRepository.findById(lesson.getCourse_id());
+        if(course.isPresent()){
+            lesson.setCourse(course.get());
+        }
+        else{
+            throw new CourseNotExist("Course does not exist");
+        }
+        course.get().getLessons().add(lesson);
+        return lessonRepository.save(lesson);
+    }
+
+    public void changeCourseTitle(String title, Long courseId){
+        Optional<CourseEntity> optionalCourse = courseRepository.findById(courseId);
+        if (optionalCourse.isPresent()) {
+            CourseEntity course = optionalCourse.get();
+            course.setTitle(title);
+            courseRepository.save(course);
+        }
+    }
+
+    public void changeCoursePrice(Long price, Long courseId){
+        Optional<CourseEntity> optionalCourse = courseRepository.findById(courseId);
+        if (optionalCourse.isPresent()) {
+            CourseEntity course = optionalCourse.get();
+            course.setPrice(price);
+            courseRepository.save(course);
+        }
     }
 }

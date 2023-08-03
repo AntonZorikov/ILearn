@@ -1,5 +1,6 @@
 package com.example.ilearn.controllers;
 
+import com.example.ilearn.entities.CourseEntity;
 import com.example.ilearn.servicies.AuthorizationService;
 import com.example.ilearn.servicies.CourseService;
 import jakarta.servlet.http.HttpSession;
@@ -60,7 +61,12 @@ public class PageController {
     public String edit_course(@RequestParam Long courseId, Model model, HttpSession session){
         if(authorizationService.isUserAuthorBySession(session) &&
                 courseService.userIsAuthorOfCourse(authorizationService.getUserBySession(session).getId(), courseId)){
-            model.addAttribute("course", courseService.getCourseById(courseId));
+            CourseEntity course = courseService.getCourseById(courseId);
+            model.addAttribute("course", course);
+            if(course.getLessons().size() > 0){
+                model.addAttribute("lessonsFind", true);
+                model.addAttribute("lessons", course.getLessons());
+            }
             return "edit_course";
         }
         else{

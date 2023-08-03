@@ -8,7 +8,7 @@
     <form th:action="@{/create_course}" method="post">
         <div>Title: <label><input type="text" name="title"></label></div>
         <div>Description: <label><input type="text" name="description"></label></div>
-        <div>Price: <label><input type="text" name="price"></label></div>
+        <div>Price: <label><input type="number" name="price"></label></div>
         <div><label><input type="submit" value="Create"></label></div>
     </form>
     <div th:if="${error}">

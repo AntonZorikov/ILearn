@@ -2,6 +2,7 @@ package com.example.ilearn.entities;
 
 import com.example.ilearn.models.LoginInputs;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,8 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class UserEntity {
     @Id

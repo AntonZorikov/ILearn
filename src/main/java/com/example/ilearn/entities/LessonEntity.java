@@ -1,13 +1,16 @@
 package com.example.ilearn.entities;
 
+import com.example.ilearn.models.CreateLessonInputs;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "lessons")
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
 public class LessonEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,4 +34,8 @@ public class LessonEntity {
     @Column(name = "course_id", insertable = false, updatable = false)
     private Long course_id;
 
+    public LessonEntity(CreateLessonInputs lessonInputs){
+        this.title = lessonInputs.getTitle();
+        this.course_id = lessonInputs.getCourse_id();
+    }
 }
