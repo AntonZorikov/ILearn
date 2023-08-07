@@ -1,0 +1,19 @@
+.input-container {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f1f1f1;
+}
+
+.input-container textarea {
+    width: 98%;
+    height: 500px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    resize: none;
+    overflow: auto;
+}
+
+.center-button {
+    display: block;
+    margin: 0 auto;
+}

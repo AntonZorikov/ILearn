@@ -99,4 +99,29 @@ public class CourseService {
             courseRepository.save(course);
         }
     }
+
+    public LessonEntity getLessonById(Long lessonId){
+        Optional<LessonEntity> lesson = lessonRepository.findById(lessonId);
+        return lesson.orElse(null);
+
+    }
+
+    public void changeLessonTitle(String title, Long lessonId){
+        Optional<LessonEntity> optionalLesson = lessonRepository.findById(lessonId);
+        if (optionalLesson.isPresent()) {
+            LessonEntity lesson = optionalLesson.get();
+            lesson.setTitle(title);
+            lessonRepository.save(lesson);
+        }
+    }
+
+    public void changeLessonText(String text, Long lessonId){
+        Optional<LessonEntity> optionalLesson = lessonRepository.findById(lessonId);
+        if (optionalLesson.isPresent()) {
+            LessonEntity lesson = optionalLesson.get();
+            lesson.setText(text);
+            lessonRepository.save(lesson);
+        }
+    }
+
 }

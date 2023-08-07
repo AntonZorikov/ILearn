@@ -3,8 +3,12 @@
 <head>
     <title>Create Course</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/form.css}" />
+    <link rel="stylesheet" th:href="@{/css/footer.css}" />
 </head>
 <body>
+<div th:insert="header :: header"></div>
     <form th:action="@{/create_course}" method="post">
         <div>Title: <label><input type="text" name="title"></label></div>
         <div>Description: <label><input type="text" name="description"></label></div>
@@ -14,4 +18,6 @@
     <div th:if="${error}">
         [[${errorMessage}]]
     </div>
+<div th:insert="footer :: footer"></div>
+
 </body>

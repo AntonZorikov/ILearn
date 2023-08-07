@@ -3,15 +3,22 @@
 <head>
     <title>Authorization</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/form.css}" />
+    <link rel="stylesheet" th:href="@{/css/footer.css}" />
 </head>
 <body>
+    <div th:insert="header :: header"></div>
+
     <form th:action="@{/signin}" method="post">
         <div>Login:<label><input type="text" name="login"></label></div>
         <div>Password:<label><input type="password" name="password"></label></div>
         <div><input type="submit" value="SignIn"></div>
+        <div>You don't have account <a href="/login">LogIn</a> </div>
+        <div th:if="${error}" style="color:red;">
+            Error: [[${errorMessage}]]
+        </div>
     </form>
 
-    <div th:if="${error}">
-        Error: [[${errorMessage}]]
-    </div>
+    <div th:insert="footer :: footer"></div>
 </body>

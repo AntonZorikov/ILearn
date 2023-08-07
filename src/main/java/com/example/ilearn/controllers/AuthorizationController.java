@@ -28,10 +28,12 @@ public class AuthorizationController {
         try {
             UserEntity user = userService.createUser(loginInputs);
             authorizationService.addUserInfoToSession(session, user);
+            model.addAttribute("isAuthorize", authorizationService.isSessionActive(session));
             return "authorization";
         }
         catch(UserAlreadyExist e){
             model.addAttribute("error", true);
+            model.addAttribute("isAuthorize", authorizationService.isSessionActive(session));
             return "login";
         }
     }
@@ -41,11 +43,13 @@ public class AuthorizationController {
         try{
             UserEntity user = userService.signin(signinInputs);
             authorizationService.addUserInfoToSession(session, user);
-            return "authorization";                                                                          //return "home_page"
+            model.addAttribute("isAuthorize", authorizationService.isSessionActive(session));
+            return "authorization";
         }
         catch(IncorrectLoginOrPassword e){
             model.addAttribute("error", true);
             model.addAttribute("errorMessage", "Incorrect login or password");
+            model.addAttribute("isAuthorize", authorizationService.isSessionActive(session));
             return "signin";
         }
     }

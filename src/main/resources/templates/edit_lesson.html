@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Lesson</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/form_2.css}" />
+    <link rel="stylesheet" th:href="@{/css/footer.css}" />
+    <link rel="stylesheet" th:href="@{/css/text_edit.css}" />
+</head>
+<body>
+<div th:insert="header :: header"></div>
+<div><h2><a th:text="${lesson.course.title}">kk</a></h2></div>
+<form th:action="@{change_lesson_title}" method="post">
+    <div>
+        <input type="text" name="title" th:value="${lesson.title}">
+        <input type="hidden" name="lessonId" th:value="${lesson.id}">
+        <input type="submit" value="Change">
+    </div>
+</form>
+
+<div><h3><a th:text="${lesson.text}"></a></h3></div>
+<form th:action="@{change_lesson_text}" method="post">
+    <div class="input-container">
+        <textarea name="text" placeholder="Lesson text:" rows="4" cols="50" required></textarea>
+        <input type="hidden" name="lessonId" th:value="${lesson.id}">
+    </div>
+    <input type="submit" value="Change">
+</form>
+
+<div th:if="${error}">
+    <a style="color: red;">Error: [[$errorMessage]]</a>
+</div>
+<div th:insert="footer :: footer"></div>
+
+</body>

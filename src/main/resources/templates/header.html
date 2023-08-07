@@ -1,0 +1,9 @@
+<header class="header">
+    <h1>ILearn</h1>
+    <nav>
+        <a href="/">Home</a>
+        <a href="courses">Courses</a>
+        <a th:if="${isAuthorize}" href="profile">Profile</a>
+        <a th:unless="${isAuthorize}" href="signin">Auth</a>
+    </nav>
+</header>

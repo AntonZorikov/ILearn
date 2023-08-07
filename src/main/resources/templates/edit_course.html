@@ -3,41 +3,53 @@
 <head>
     <title>Edit Course</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/form_2.css}" />
+    <link rel="stylesheet" th:href="@{/css/course_card.css}" />
+    <link rel="stylesheet" th:href="@{/css/footer.css}" />
 </head>
 <body>
-    <div></div><a th:text="${course.title}"></a></div>
+    <div th:insert="header :: header"></div>
     <form th:action="@{/change_course_title}" method="post">
-        <div><label><input type="text" name="title"></label></div>
-        <div><label><input type="hidden" name="course_id" th:value="${course.id}"></label></div>
-        <div><input type="submit" value="Change"></div>
+        <div>
+            <input type="text" name="title" th:value="${course.title}">
+            <input type="submit" value="Change">
+        </div>
+        <label><input type="hidden" name="course_id" th:value="${course.id}"></label>
     </form>
-    <div><a th:text="${course.author.login}"></a></div>
-    <div><a th:text="${course.description}"></a></div>
+    <div class="input-container">
+        <a th:text="${course.description}"></a>
+        <button type="button" onclick="location.href='/your_url_here'">Edit</button>
+    </div>
     <!--    Change description (go to other page)-->
     <!--    ...-->
-    <div><a th:text="${course.price}"></a></div>
     <form th:action="@{/change_course_price}" method="post">
-        <div><label><input type="number" name="price"></label></div>
-        <div><label><input type="hidden" name="course_id" th:value="${course.id}"></label></div>
-        <div><input type="submit" value="Change"></div>
+        <div>
+            <input type="number" name="price" th:value="${course.price}">
+            <input type="submit" value="Change">
+        </div>
+        <label><input type="hidden" name="course_id" th:value="${course.id}"></label>
     </form>
-
-    <h3>Lessons:</h3>
     <div th:if="${lessonsFind}">
         <table>
+            <tr>
+            <form th:action="@{/create_lesson}" method="post">
+                <td>Title:</td>
+                <td><input type="text" name="title" required></td>
+                <input type="hidden" name="course_id" th:value="${course.id}">
+                <td><input type="submit" value="Create new lesson"></td>
+            </form>
+            </tr>
             <tr th:each="lesson : ${lessons}">
-                <td><a th:text="${lesson.title}"></a></td>
-                <!--<td><a th:href="/edit_lesson(lessonId=${lesson.id})}"></a></td> -->
+                <td><a th:href="@{/edit_lesson(lessonId=${lesson.id})}" th:text="${lesson.title}"></a></td>
+                <td></td>
+                <td></td>
             </tr>
         </table>
     </div>
-    <h3>Create Lesson:</h3>
-    <form th:action="@{/create_lesson}" method="post">
-        <div>Title:<label><input type="text" name="title" required></label></div>
-        <div><label><input type="hidden" name="course_id" th:value="${course.id}"></label></div>
-        <div><label><input type="submit"></label></div>
-    </form>
     <div th:if="${error}">
         <a style="color: red;">Error: [[$errorMessage]]</a>
     </div>
+
+    <div th:insert="footer :: footer"></div>
 </body>

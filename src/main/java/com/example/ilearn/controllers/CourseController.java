@@ -1,6 +1,7 @@
 package com.example.ilearn.controllers;
 
 import com.example.ilearn.entities.CourseEntity;
+import com.example.ilearn.entities.LessonEntity;
 import com.example.ilearn.exceptions.*;
 import com.example.ilearn.models.CreateCourseInputs;
 import com.example.ilearn.models.CreateLessonInputs;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class CourseController {
+
     @Autowired
     private AuthorizationService authorizationService;
 
@@ -27,15 +29,18 @@ public class CourseController {
         try {
             if (authorizationService.isSessionActive(session)) {
                 courseService.createCourse(createCourseInputs, session);
+                model.addAttribute("isAuthorize", authorizationService.isSessionActive(session));
                 return "home";
             } else {
                 model.addAttribute("error", true);
                 model.addAttribute("errorMessage", "Not enough rights");
+                model.addAttribute("isAuthorize", authorizationService.isSessionActive(session));
                 return "error";
             }
         } catch (CourseAlreadyExist | UserNotFound e) {
             model.addAttribute("error", true);
             model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("isAuthorize", authorizationService.isSessionActive(session));
             return "create_course";
         }
     }
@@ -49,8 +54,6 @@ public class CourseController {
                 redirectAttributes.addAttribute("courseId", lessonInputs.getCourse_id());
                 return "redirect:/edit_course";
             } catch (CourseNotExist | IncorrectData exception) {
-//                model.addAttribute("error", true);
-//                model.addAttribute("errorMessage", exception.getMessage());
                 redirectAttributes.addAttribute("courseId", lessonInputs.getCourse_id());
                 return "redirect:/edit_course";
             }
@@ -70,6 +73,7 @@ public class CourseController {
             return "redirect:/edit_course";
         } else {
             model.addAttribute("errorMessage", "Not enough rights");
+            model.addAttribute("isAuthorize", authorizationService.isSessionActive(session));
             return "error";
         }
     }
@@ -84,6 +88,39 @@ public class CourseController {
             return "redirect:/edit_course";
         } else {
             model.addAttribute("errorMessage", "Not enough rights");
+            model.addAttribute("isAuthorize", authorizationService.isSessionActive(session));
+            return "error";
+        }
+    }
+
+    @PostMapping("/change_lesson_title")
+    private String change_lesson_title(@RequestParam String title, @RequestParam Long lessonId,HttpSession session,
+                                       Model model, RedirectAttributes redirectAttributes){
+        LessonEntity lesson = courseService.getLessonById(lessonId);
+        if (authorizationService.isUserAuthorBySession(session) &&
+                courseService.userIsAuthorOfCourse(authorizationService.getUserBySession(session).getId(), lesson.getCourse_id())) {
+            courseService.changeLessonTitle(title, lessonId);
+            redirectAttributes.addAttribute("lessonId", lesson.getId());
+            return "redirect:/edit_lesson";
+        } else {
+            model.addAttribute("errorMessage", "Not enough rights");
+            model.addAttribute("isAuthorize", authorizationService.isSessionActive(session));
+            return "error";
+        }
+    }
+
+    @PostMapping("/change_lesson_text")
+    private String change_lesson_text(@RequestParam String text, @RequestParam Long lessonId,HttpSession session,
+                                       Model model, RedirectAttributes redirectAttributes){
+        LessonEntity lesson = courseService.getLessonById(lessonId);
+        if (authorizationService.isUserAuthorBySession(session) &&
+                courseService.userIsAuthorOfCourse(authorizationService.getUserBySession(session).getId(), lesson.getCourse_id())) {
+            courseService.changeLessonText(text, lessonId);
+            redirectAttributes.addAttribute("lessonId", lesson.getId());
+            return "redirect:/edit_lesson";
+        } else {
+            model.addAttribute("errorMessage", "Not enough rights");
+            model.addAttribute("isAuthorize", authorizationService.isSessionActive(session));
             return "error";
         }
     }
