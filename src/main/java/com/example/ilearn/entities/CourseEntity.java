@@ -41,4 +41,15 @@ public class CourseEntity {
         this.user_id = author.getId();
         this.author = author;
     }
+
+    @Override
+    public String toString() {
+        return "CourseEntity{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                '}';
+    }
+
 }

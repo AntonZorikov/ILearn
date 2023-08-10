@@ -7,6 +7,7 @@ import com.example.ilearn.models.CreateCourseInputs;
 import com.example.ilearn.models.CreateLessonInputs;
 import com.example.ilearn.servicies.AuthorizationService;
 import com.example.ilearn.servicies.CourseService;
+import com.example.ilearn.servicies.PaymentService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,9 @@ public class CourseController {
 
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    private PaymentService paymentService;
 
     @PostMapping("/create_course")
     private String createCourse(CreateCourseInputs createCourseInputs, Model model, HttpSession session) throws Exception {
@@ -118,6 +122,28 @@ public class CourseController {
             courseService.changeLessonText(text, lessonId);
             redirectAttributes.addAttribute("lessonId", lesson.getId());
             return "redirect:/edit_lesson";
+        } else {
+            model.addAttribute("errorMessage", "Not enough rights");
+            model.addAttribute("isAuthorize", authorizationService.isSessionActive(session));
+            return "error";
+        }
+    }
+
+    @PostMapping("buy_course")
+    private String buy_course(@RequestParam Long courseId, HttpSession session, Model model, RedirectAttributes redirectAttributes){
+        paymentService.buyCourse(authorizationService.getUserBySession(session).getId(), courseId);
+        redirectAttributes.addAttribute("courseId", courseId);
+        return "redirect:/course";
+    }
+
+    @PostMapping("/change_course_description")
+    private String change_course_description(@RequestParam String description, @RequestParam Long courseId,HttpSession session,
+                                      Model model, RedirectAttributes redirectAttributes){
+        if (authorizationService.isUserAuthorBySession(session) &&
+                courseService.userIsAuthorOfCourse(authorizationService.getUserBySession(session).getId(), courseId)) {
+            courseService.changeCourseDescription(description, courseId);
+            redirectAttributes.addAttribute("courseId", courseId);
+            return "redirect:/edit_course";
         } else {
             model.addAttribute("errorMessage", "Not enough rights");
             model.addAttribute("isAuthorize", authorizationService.isSessionActive(session));

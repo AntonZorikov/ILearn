@@ -32,9 +32,26 @@ public class UserEntity {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<CourseEntity> courses;
 
+//    @ManyToMany
+//    @JoinTable(name = "cart",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "course_id"))
+//    private List<CourseEntity> purchasedCourses;
+
     public UserEntity(LoginInputs loginInputs){
         this.login = loginInputs.getLogin();
         this.password = loginInputs.getPassword();
         this.email = loginInputs.getEmail();
     }
+
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", email='" + email + '\'' +
+                ", role='" + role + '\'' +
+                '}';
+    }
+
 }

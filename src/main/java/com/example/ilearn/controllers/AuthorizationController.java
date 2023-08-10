@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class AuthorizationController {
@@ -28,8 +29,7 @@ public class AuthorizationController {
         try {
             UserEntity user = userService.createUser(loginInputs);
             authorizationService.addUserInfoToSession(session, user);
-            model.addAttribute("isAuthorize", authorizationService.isSessionActive(session));
-            return "authorization";
+            return "redirect:/";
         }
         catch(UserAlreadyExist e){
             model.addAttribute("error", true);
@@ -43,8 +43,7 @@ public class AuthorizationController {
         try{
             UserEntity user = userService.signin(signinInputs);
             authorizationService.addUserInfoToSession(session, user);
-            model.addAttribute("isAuthorize", authorizationService.isSessionActive(session));
-            return "authorization";
+            return "redirect:/";
         }
         catch(IncorrectLoginOrPassword e){
             model.addAttribute("error", true);
@@ -52,5 +51,11 @@ public class AuthorizationController {
             model.addAttribute("isAuthorize", authorizationService.isSessionActive(session));
             return "signin";
         }
+    }
+
+    @PostMapping("logout")
+    public String logout(HttpSession session){
+        authorizationService.logout(session);
+        return "redirect:/";
     }
 }

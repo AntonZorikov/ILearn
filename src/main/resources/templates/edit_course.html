@@ -7,6 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/form_2.css}" />
     <link rel="stylesheet" th:href="@{/css/course_card.css}" />
     <link rel="stylesheet" th:href="@{/css/footer.css}" />
+    <link rel="stylesheet" th:href="@{/css/text_edit.css}" />
 </head>
 <body>
     <div th:insert="header :: header"></div>
@@ -19,10 +20,14 @@
     </form>
     <div class="input-container">
         <a th:text="${course.description}"></a>
-        <button type="button" onclick="location.href='/your_url_here'">Edit</button>
+        <form th:action="@{change_course_description}" method="post">
+            <div class="input-container">
+                <textarea name="description" placeholder="Course description:" rows="4" cols="50" required></textarea>
+                <input type="hidden" name="courseId" th:value="${course.id}">
+            </div>
+            <input type="submit" value="Change">
+        </form>
     </div>
-    <!--    Change description (go to other page)-->
-    <!--    ...-->
     <form th:action="@{/change_course_price}" method="post">
         <div>
             <input type="number" name="price" th:value="${course.price}">
@@ -30,23 +35,21 @@
         </div>
         <label><input type="hidden" name="course_id" th:value="${course.id}"></label>
     </form>
-    <div th:if="${lessonsFind}">
-        <table>
-            <tr>
-            <form th:action="@{/create_lesson}" method="post">
-                <td>Title:</td>
-                <td><input type="text" name="title" required></td>
-                <input type="hidden" name="course_id" th:value="${course.id}">
-                <td><input type="submit" value="Create new lesson"></td>
-            </form>
-            </tr>
-            <tr th:each="lesson : ${lessons}">
-                <td><a th:href="@{/edit_lesson(lessonId=${lesson.id})}" th:text="${lesson.title}"></a></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </table>
-    </div>
+    <table>
+        <tr>
+        <form th:action="@{/create_lesson}" method="post">
+            <td>Title:</td>
+            <td><input type="text" name="title" required></td>
+            <input type="hidden" name="course_id" th:value="${course.id}">
+            <td><input type="submit" value="Create new lesson"></td>
+        </form>
+        </tr>
+        <tr th:each="lesson : ${lessons}">
+            <td><a th:href="@{/edit_lesson(lessonId=${lesson.id})}" th:text="${lesson.title}"></a></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
     <div th:if="${error}">
         <a style="color: red;">Error: [[$errorMessage]]</a>
     </div>

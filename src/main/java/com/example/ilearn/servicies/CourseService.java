@@ -1,5 +1,6 @@
 package com.example.ilearn.servicies;
 
+import com.example.ilearn.entities.CartEntity;
 import com.example.ilearn.entities.CourseEntity;
 import com.example.ilearn.entities.LessonEntity;
 import com.example.ilearn.entities.UserEntity;
@@ -8,6 +9,7 @@ import com.example.ilearn.exceptions.CourseNotExist;
 import com.example.ilearn.exceptions.IncorrectData;
 import com.example.ilearn.models.CreateCourseInputs;
 import com.example.ilearn.models.CreateLessonInputs;
+import com.example.ilearn.repositories.CartRepository;
 import com.example.ilearn.repositories.CourseRepository;
 import com.example.ilearn.repositories.LessonRepository;
 import com.example.ilearn.repositories.UserRepository;
@@ -15,6 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -29,6 +32,9 @@ public class CourseService {
 
     @Autowired
     private LessonRepository lessonRepository;
+
+    @Autowired
+    private CartRepository cartRepository;
 
     public CourseEntity createCourse(CreateCourseInputs createCourseInputs, HttpSession session) throws Exception {
         if(courseRepository.findByTitle(createCourseInputs.getTitle()) == null){
@@ -124,4 +130,35 @@ public class CourseService {
         }
     }
 
+    public List<CourseEntity> getAllCourses(){
+        return (List<CourseEntity>) courseRepository.findAll();
+    }
+
+    public Long getCourseCount(){
+        return courseRepository.count();
+    }
+
+    public boolean userBoughtCourse(Long userId, Long courseId){
+        Optional<CartEntity> cart = Optional.ofNullable(cartRepository.findByUseridAndCourseid(userId, courseId));
+        return cart.isPresent();
+    }
+
+    public List<CourseEntity> getAllCoursesInCart(Long userId){
+        List<CartEntity> carts = cartRepository.findAllByUserid(userId);
+        List<CourseEntity> courses = new ArrayList<>();
+        for (CartEntity cart : carts) {
+            Optional<CourseEntity> course = courseRepository.findById(cart.getCourseid());
+            course.ifPresent(courses::add);
+        }
+        return courses;
+    }
+
+    public void changeCourseDescription(String description, Long courseId){
+        Optional<CourseEntity> optionalCourse = courseRepository.findById(courseId);
+        if (optionalCourse.isPresent()) {
+            CourseEntity course = optionalCourse.get();
+            course.setDescription(description);
+            courseRepository.save(course);
+        }
+    }
 }

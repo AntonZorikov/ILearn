@@ -1,0 +1,22 @@
+.title-block {
+    text-align: center;
+    background-color: #ffffff;
+}
+
+.title {
+    font-size: 36px;
+    color: #333333;
+}
+
+.text-block {
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+.text {
+    font-size: 18px;
+    color: #666666;
+    line-height: 1.6;
+}

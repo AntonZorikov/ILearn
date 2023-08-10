@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Cart</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/footer.css}" />
+</head>
+<body>
+<div th:insert="header :: header"></div>
+
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th></th>
+    </tr>
+    <tr th:each="course : ${courses}">
+        <td class="title-cell" th:text="${course.title}"></td>
+        <td class="description-cell" th:text="${course.description}"></td>
+        <td th:text="${course.price}"></td>
+        <td><a th:href="@{/course(courseId=${course.id})}">Open</a></td>
+    </tr>
+</table>
+<div th:insert="footer :: footer"></div>
+</body>
+</html>

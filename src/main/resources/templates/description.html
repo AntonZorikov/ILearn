@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Description</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/footer.css}" />
+    <link rel="stylesheet" th:href="@{/css/text_edit.css}" />
+</head>
+<body>
+<div th:insert="header :: header"></div>
+<form th:action="@{change_course_description}" method="post">
+    <div class="input-container">
+        <textarea name="description" placeholder="Course description:" rows="4" cols="50" required></textarea>
+        <input type="hidden" name="courseId" th:value="${courseId}">
+    </div>
+    <input type="submit" value="Change">
+</form>
+<div th:insert="footer :: footer"></div>
+</body>

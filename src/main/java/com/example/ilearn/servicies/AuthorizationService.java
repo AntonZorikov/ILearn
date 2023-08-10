@@ -44,4 +44,8 @@ public class AuthorizationService {
         Optional<UserEntity> user = userRepository.findById((Long) session.getAttribute("userId"));
         return user.orElse(null);
     }
+
+    public void logout(HttpSession session){
+        session.invalidate();
+    }
 }

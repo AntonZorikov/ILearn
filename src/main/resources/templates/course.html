@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>ILearn Course</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/footer.css}" />
+    <link rel="stylesheet" th:href="@{/css/course.css}" />
+    <link rel="stylesheet" th:href="@{/css/form_2.css}" />
+
+</head>
+<body>
+    <div th:insert="header :: header"></div>
+    <div class="course-card">
+        <div class="course-title" th:text="${course.title}"></div>
+        <div class="course-author" th:text="${course.author.login}"></div>
+        <div class="course-price" th:text="${course.price}"></div>
+        <div class="course-description" th:text="${course.description}"></div>
+        <div th:unless="${isAuthorize}">
+            Please authorize to buy course
+        </div>
+        <div th:if="${isAuthorize}">
+            <div th:unless="${isBought}">
+                <form th:action="@{buy_course}" method="post">
+                    <input type="hidden" name="courseId" th:value="${course.id}">
+                    <input type="submit" value="Buy">
+                </form>
+            </div>
+        </div>
+    </div>
+    <div th:if="${lessonsFind}">
+        <table>
+            <tr th:each="lesson : ${lessons}">
+                <td><a th:href="@{/lesson(lessonId=${lesson.id})}" th:text="${lesson.title}"></a></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+    <div th:insert="footer :: footer"></div>
+    </body>
+</html>

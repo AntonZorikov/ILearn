@@ -3,7 +3,62 @@
 <head>
     <title>ILearn</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/footer.css}" />
+    <link rel="stylesheet" th:href="@{/css/home.css}" />
 </head>
-<body>
+<style>
+        .course-title a {
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
 
+        .course-card {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        .course-title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .course-description {
+            margin-top: 10px;
+        }
+
+        .course-price {
+            margin-top: 10px;
+            color: #516650;
+            font-weight: bold;
+        }
+    </style>
+<body>
+<div th:insert="header :: header"></div>
+
+<div class="image-container">
+    <img src="/images/home-image.jpg" alt="Image" style="max-width: 100%; height: auto;">
+    <div class="overlay-text">
+        <h3>ILearn</h3>
+        <p>Open source online learning platform with <a th:text="${courseCount}"></a> courses</p>
+    </div>
+</div>
+
+<table>
+    <tr th:each="course:${courses}">
+        <td class="course-card">
+            <div class="course-title"><a th:text="${course.title}" th:href="@{/course(courseId=${course.id})}" ></a></div>
+            <div class="course-description" th:text="${course.description}"></div>
+            <div class="course-price" th:text="${course.price}"></div>
+        </td>
+    </tr>
+</table>
+
+<div th:insert="footer :: footer"></div>
 </body>
+</html>
